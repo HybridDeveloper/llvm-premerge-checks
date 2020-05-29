@@ -104,7 +104,6 @@ def _create_env(config: Configuration) -> Dict[str, str]:
     return env
 
 
-
 def _create_args(config: Configuration, llvm_enable_projects: str) -> List[str]:
     """Generate the command line arguments for cmake."""
     arguments = [
