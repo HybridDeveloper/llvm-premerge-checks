@@ -99,7 +99,7 @@ if __name__ == '__main__':
     maybe_add_url_artifact(phabtalk, os.getenv('ph_target_phid'), os.getenv('BUILDKITE_BUILD_URL'), 'Buildkite build 2')
     artifacts_dir = os.path.join(os.getcwd(), 'artifacts')
     os.makedirs(artifacts_dir, exist_ok=True)
-    with open(os.path.join(artifacts_dir, 'build_result.txt')) as f:
+    with open(os.path.join(artifacts_dir, 'build_result.txt'), 'w') as f:
         f.write("failed")
     report = Report()
     timings = {}
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     with open(os.path.join(artifacts_dir, 'step-timings.json'), 'w') as f:
         f.write(json.dumps(timings))
     if success:
-        with open(os.path.join(artifacts_dir, 'build_result.txt')) as f:
+        with open(os.path.join(artifacts_dir, 'build_result.txt'), 'w') as f:
             f.write("succeeded")
     else:
         print('Build completed with failures')
