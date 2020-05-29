@@ -113,7 +113,7 @@ To spawn a new windows agent:
 1. Go to the [GCP page](https://pantheon.corp.google.com/compute/instances?project=llvm-premerge-checks&instancessize=50) and pick a new number for the agent.
 1. Run `kubernetes/windows_agent_create.sh agent-windows-<number>`
 1. Go to the [GCP page](https://pantheon.corp.google.com/compute/instances?project=llvm-premerge-checks&instancessize=50) again 
-1. login to the new machine via RDP (you will need a RDP client, e.g. Chrome app).
+1. Login to the new machine via RDP (you will need a RDP client, e.g. Chrome app).
 1. In the RDP session: run these commands in the CMD window under Administrator to bootstrap the Windows machine:
     ```powershell 
     Invoke-WebRequest -uri 'https://raw.githubusercontent.com/google/llvm-premerge-checks/master/scripts/windows_agent_bootstrap.ps1' -OutFile windows_agent_bootstrap.ps1

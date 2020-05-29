@@ -40,6 +40,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     logging.basicConfig(level=args.log_level, format='%(levelname)-7s %(message)s')
+    print(os.environ)
     phabtalk = PhabTalk(os.getenv('CONDUIT_TOKEN'), 'https://reviews.llvm.org/api/', False)
     build_url = f'https://reviews.llvm.org/harbormaster/build/{os.getenv("ph_build_id")}'
     print(f'Reporting results to Phabricator build {format_url(build_url)}')

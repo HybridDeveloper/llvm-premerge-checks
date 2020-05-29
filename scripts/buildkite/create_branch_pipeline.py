@@ -36,17 +36,6 @@ if __name__ == '__main__':
                     'env': {'scripts_branch': '${BUILDKITE_BRANCH}'},
             },
     }
-    # TODO: remove pipeline
-    # build_windows_step = {
-    #     'trigger': 'premerge-checks-win',
-    #     'label': ':windows: build and test',
-    #     'async': False,
-    #     'depends_on': 'create-branch',
-    #     'build': {
-    #         'branch': f'phab-diff-{diff_id}',
-    #         'env': {'scripts_branch': '${BUILDKITE_BRANCH}'},
-    #     },
-    # }
     for e in os.environ:
         if e.startswith('ph_'):
             build_linux_step['build']['env'][e] = os.getenv(e)

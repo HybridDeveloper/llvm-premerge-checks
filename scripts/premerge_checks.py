@@ -25,7 +25,7 @@ import subprocess
 import time
 import uuid
 from typing import Callable, Optional
-from buildkite.utils import upload_file
+from buildkite.utils import upload_file, format_url
 
 import clang_format_report
 import clang_tidy_report
@@ -86,7 +86,6 @@ def cmake_report(report: Report) -> CheckResult:
             shutil.copy2(file, artifacts_dir)
     return add_shell_result(report, 'cmake', cmake_result)
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Runs premerge checks8')
     parser.add_argument('--log-level', type=str, default='WARNING')
@@ -94,13 +93,14 @@ if __name__ == '__main__':
     parser.add_argument('--check-clang-tidy', action='store_true')
     args = parser.parse_args()
     logging.basicConfig(level=args.log_level, format='%(levelname)-7s %(message)s')
-
     build_dir = ''
     scripts_dir = pathlib.Path(__file__).parent.absolute()
     phabtalk = PhabTalk(os.getenv('CONDUIT_TOKEN'), 'https://reviews.llvm.org/api/', False)
     maybe_add_url_artifact(phabtalk, os.getenv('ph_target_phid'), os.getenv('BUILDKITE_BUILD_URL'), 'Buildkite build 2')
     artifacts_dir = os.path.join(os.getcwd(), 'artifacts')
     os.makedirs(artifacts_dir, exist_ok=True)
+    with open(os.path.join(artifacts_dir, 'build_result.txt')) as f:
+        f.write("failed")
     report = Report()
     timings = {}
     cmake_result = run_step('cmake', report, cmake_report)
@@ -149,10 +149,14 @@ if __name__ == '__main__':
                     maybe_add_url_artifact(phabtalk, ph_target_phid, url, a['name'])
     else:
         logging.warning('No phabricator phid is specified. Will not update the build status in Phabricator')
+    with open('build_result')
     # TODO: add link to report issue on github
     with open(os.path.join(artifacts_dir, 'step-timings.json'), 'w') as f:
         f.write(json.dumps(timings))
-    if not success:
+    if success:
+        with open(os.path.join(artifacts_dir, 'build_result.txt')) as f:
+            f.write("succeeded")
+    else:
         print('Build completed with failures')
         # TODO: test with python error in script
         exit(1)
