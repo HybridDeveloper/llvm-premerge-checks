@@ -22,7 +22,7 @@ if __name__ == '__main__':
     diff_id = os.getenv("ph_buildable_diff", "")
     steps = []
     linux_buld_step = {
-        'label': 'build linux',
+        'label': ':linux: build linux',
         'key': 'build-linux',
         'commands': [
             'export SRC=${BUILDKITE_BUILD_PATH}/llvm-premerge-checks',
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         'agents': {'queue': queue, 'os': 'linux'}
     }
     windows_buld_step = {
-        'label': 'build windows',
+        'label': ':windows:build windows',
         'key': 'build-windows',
         'commands': [
             'set SRC=%BUILDKITE_BUILD_PATH%/llvm-premerge-checks',
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     steps.append(linux_buld_step)
     steps.append(windows_buld_step)
     report_step = {
-        'label': 'report',
+        'label': ':scales: report',
         'depends_on': [linux_buld_step['key'], windows_buld_step['key']],
         'commands': [
             'buildkite-agent artifact download build_result.txt artifacts/build_result_win.txt --step build-windows',
