@@ -16,9 +16,14 @@
 import argparse
 import logging
 import os
+import sys
 import uuid
 
-from phabtalk import PhabTalk
+if __name__ == '__main__':
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# from phabtalk import PhabTalk
+# else:
+from phabtalk.phabtalk import PhabTalk
 
 
 def maybe_add_url_artifact(phab: PhabTalk, phid: str, url: str, name: str):

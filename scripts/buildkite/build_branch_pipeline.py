@@ -33,6 +33,7 @@ if __name__ == '__main__':
             '--url="$BUILDKITE_BUILD_URL" '
             '--name="Buildkite build"',
             '${SRC}/scripts/premerge_checks.py --check-clang-format --check-clang-tidy',
+            'exit 1',
         ],
         'artifact_paths': ['artifacts/**/*'],
         'agents': {'queue': queue, 'os': 'linux'}
@@ -51,4 +52,15 @@ if __name__ == '__main__':
     }
     steps.append(linux_buld_step)
     # steps.append(windows_buld_step)
+    report_step = {
+        'label': 'report',
+        'depends_on': [linux_buld_step['key']],
+        'commands': [
+            'echo report',
+        ],
+        'allow_dependency_failure': True,
+        'artifact_paths': ['artifacts/**/*'],
+        'agents': {'queue': queue, 'os': 'linux'}
+    }
+    steps.append(report_step)
     print(yaml.dump({'steps': steps}))
