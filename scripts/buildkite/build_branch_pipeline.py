@@ -51,10 +51,10 @@ if __name__ == '__main__':
         'agents': {'queue': 'dev', 'os': 'windows'}
     }
     steps.append(linux_buld_step)
-    # steps.append(windows_buld_step)
+    steps.append(windows_buld_step)
     report_step = {
         'label': 'report',
-        'depends_on': [linux_buld_step['key']],
+        'depends_on': [linux_buld_step['key'], windows_buld_step['key']],
         'commands': [
             'echo report',
         ],
