@@ -46,4 +46,4 @@ if __name__ == '__main__':
     print(f'Reporting results to Phabricator build {format_url(build_url)}')
     ph_buildable_diff = os.getenv('ph_buildable_diff')
     ph_target_phid = os.getenv('ph_target_phid')
-    phabtalk.update_build_status(ph_buildable_diff, ph_target_phid, False, args.success, None, None)
+    phabtalk.update_build_status(ph_buildable_diff, ph_target_phid, False, args.success)
