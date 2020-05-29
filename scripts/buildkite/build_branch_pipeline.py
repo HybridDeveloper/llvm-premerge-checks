@@ -32,7 +32,7 @@ if __name__ == '__main__':
             '--phid="$ph_target_phid" '
             '--url="$BUILDKITE_BUILD_URL" '
             '--name="Buildkite build"',
-            # '${SRC}/scripts/premerge_checks.py --check-clang-format --check-clang-tidy',
+            '${SRC}/scripts/premerge_checks.py --check-clang-format --check-clang-tidy',
         ],
         'artifact_paths': ['artifacts/**/*'],
         'agents': {'queue': queue, 'os': 'linux'}
