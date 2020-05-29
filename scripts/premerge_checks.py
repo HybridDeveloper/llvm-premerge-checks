@@ -149,9 +149,8 @@ if __name__ == '__main__':
                     maybe_add_url_artifact(phabtalk, ph_target_phid, url, a['name'])
     else:
         logging.warning('No phabricator phid is specified. Will not update the build status in Phabricator')
-    with open('build_result')
     # TODO: add link to report issue on github
-    with open(os.path.join(artifacts_dir, 'step-timings.json'), 'w') as f:
+    with open(os.path.join(artifacts_dir, 'step_timings.json'), 'w') as f:
         f.write(json.dumps(timings))
     if success:
         with open(os.path.join(artifacts_dir, 'build_result.txt'), 'w') as f:
