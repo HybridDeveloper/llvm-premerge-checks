@@ -34,7 +34,6 @@ if (${testing}) {
     docker run -it `
     -v ${workdir}:C:\ws `
     -v C:\credentials:C:\credentials `
-    -e BUILDKITE_AGENT_NAME=$env:computername `
     -e BUILDKITE_BUILD_PATH=C:\ws `
     --restart unless-stopped `
     ${IMAGE} powershell
@@ -46,7 +45,6 @@ if (${testing}) {
     docker run -d `
     -v ${workdir}:C:\ws `
     -v C:\credentials:C:\credentials `
-    -e BUILDKITE_AGENT_NAME=$env:computername `
     -e BUILDKITE_BUILD_PATH=C:\ws `
     --restart unless-stopped `
     --name ${NAME} `
