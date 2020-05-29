@@ -50,7 +50,7 @@ def run(test_results, report: Optional[Report]):
             }
             report.unit.append(test_result)
 
-    msg = f'{report.test_stats["pass"]} tests passed, {report.test_stats["fail"]} failed and' \
+    msg = f'{report.test_stats["pass"]} tests passed, {report.test_stats["fail"]} failed and ' \
           f'{report.test_stats["skip"]} were skipped.\n'
     if success:
         report.add_step('test results', CheckResult.SUCCESS, msg)
