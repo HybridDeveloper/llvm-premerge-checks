@@ -16,11 +16,9 @@
 import argparse
 import logging
 import os
-import sys
 import uuid
-# Add "scripts" dir to import path.
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from phabtalk.phabtalk import PhabTalk
+
+from phabtalk import PhabTalk
 
 
 def maybe_add_url_artifact(phab: PhabTalk, phid: str, url: str, name: str):

@@ -104,7 +104,7 @@ if __name__ == '__main__':
     build_dir = ''
     scripts_dir = pathlib.Path(__file__).parent.absolute()
     phabtalk = PhabTalk(os.getenv('CONDUIT_TOKEN'), 'https://reviews.llvm.org/api/', False)
-    # maybe_add_url_artifact(phabtalk, os.getenv('ph_target_phid'), os.getenv('BUILDKITE_BUILD_URL'), 'Buildkite build')
+    maybe_add_url_artifact(phabtalk, os.getenv('ph_target_phid'), os.getenv('BUILDKITE_BUILD_URL'), 'Buildkite build 2')
     artifacts_dir = os.path.join(os.getcwd(), 'artifacts')
     os.makedirs(artifacts_dir, exist_ok=True)
     report = Report()
