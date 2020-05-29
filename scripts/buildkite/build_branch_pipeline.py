@@ -57,8 +57,8 @@ if __name__ == '__main__':
         'label': ':scales: report',
         'depends_on': [linux_buld_step['key'], windows_buld_step['key']],
         'commands': [
-            'buildkite-agent artifact download build_result.txt artifacts/build_result_win.txt --step build-windows',
-            'buildkite-agent artifact download build_result.txt artifacts/build_result_linux.txt --step build-linux',
+            'buildkite-agent artifact download "artifacts\\build_result.txt" artifacts/build_result_win.txt --step build-windows',
+            'buildkite-agent artifact download "artifacts\\\\build_result.txt" artifacts/build_result_linux.txt --step build-linux',
             'export SRC=${BUILDKITE_BUILD_PATH}/llvm-premerge-checks',
             'rm -rf ${SRC}',
             'git clone --depth 1 --branch ${scripts_branch} https://github.com/google/llvm-premerge-checks.git ${SRC}',
