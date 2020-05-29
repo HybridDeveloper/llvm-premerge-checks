@@ -41,10 +41,12 @@ if __name__ == '__main__':
         'label': ':windows:build windows',
         'key': 'build-windows',
         'commands': [
+            'sccache --show-stats',
             'set SRC=%BUILDKITE_BUILD_PATH%/llvm-premerge-checks',
             'rm -rf %SRC%',
             'git clone --depth 1 --branch %scripts_branch% https://github.com/google/llvm-premerge-checks.git %SRC%',
             '%SRC%/scripts/premerge_checks.py',
+            'sccache --show-stats',
         ],
         'artifact_paths': ['artifacts/**/*'],
         'agents': {'queue': queue, 'os': 'windows'},
