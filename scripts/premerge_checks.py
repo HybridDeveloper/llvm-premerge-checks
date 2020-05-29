@@ -25,36 +25,14 @@ import subprocess
 import time
 import uuid
 from typing import Callable, Optional
+from buildkite.utils import upload_file
 
 import clang_format_report
 import clang_tidy_report
 import run_cmake
 import test_results_report
 from phabtalk.phabtalk import Report, CheckResult, PhabTalk
-
-
-def upload_file(base_dir: str, file: str):
-    """
-    Uploads artifact to buildkite and returns URL to it
-    """
-    r = subprocess.run(f'buildkite-agent artifact upload "{file}"', shell=True, capture_output=True, cwd=base_dir)
-    logging.debug(f'upload-artifact {r}')
-    match = re.search('Uploading artifact ([^ ]*) ', r.stderr.decode())
-    logging.debug(f'match {match}')
-    if match:
-        url = f'https://buildkite.com/organizations/llvm-project/pipelines/premerge-checks/builds/{os.getenv("BUILDKITE_BUILD_NUMBER")}/jobs/{os.getenv("BUILDKITE_JOB_ID")}/artifacts/{match.group(1)}'
-        logging.info(f'uploaded {file} to {url}')
-        return url
-    else:
-        logging.warning(f'could not find artifact {base_dir}/{file}')
-        return None
-
-
-def maybe_add_url_artifact(phab: PhabTalk, url: str, name: str):
-    phid = os.getenv('ph_target_phid')
-    if phid is None:
-        return
-    phab.create_artifact(phid, str(uuid.uuid4()), 'uri', {'uri': url, 'ui.external': True, 'name': name})
+from phabtalk.add_url_artifact import maybe_add_url_artifact
 
 
 def add_shell_result(report: Report, name: str, exit_code: int) -> CheckResult:
@@ -126,7 +104,7 @@ if __name__ == '__main__':
     build_dir = ''
     scripts_dir = pathlib.Path(__file__).parent.absolute()
     phabtalk = PhabTalk(os.getenv('CONDUIT_TOKEN'), 'https://reviews.llvm.org/api/', False)
-    maybe_add_url_artifact(phabtalk, os.getenv('BUILDKITE_BUILD_URL'), 'Buildkite build')
+    # maybe_add_url_artifact(phabtalk, os.getenv('ph_target_phid'), os.getenv('BUILDKITE_BUILD_URL'), 'Buildkite build')
     artifacts_dir = os.path.join(os.getcwd(), 'artifacts')
     os.makedirs(artifacts_dir, exist_ok=True)
     report = Report()
@@ -176,7 +154,7 @@ if __name__ == '__main__':
         for a in report.artifacts:
             url = upload_file(a['dir'], a['file'])
             if url is not None:
-                maybe_add_url_artifact(phabtalk, url, a['name'])
+                maybe_add_url_artifact(phabtalk, ph_target_phid, url, a['name'])
     else:
         logging.warning('No phabricator phid is specified. Will not update the build status in Phabricator')
     # TODO: add link to report issue on github
