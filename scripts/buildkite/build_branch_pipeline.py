@@ -33,7 +33,6 @@ if __name__ == '__main__':
             '--url="$BUILDKITE_BUILD_URL" '
             '--name="Buildkite build"',
             '${SRC}/scripts/premerge_checks.py --check-clang-format --check-clang-tidy',
-            'exit 1',
         ],
         'artifact_paths': ['artifacts/**/*'],
         'agents': {'queue': queue, 'os': 'linux'}
@@ -56,7 +55,10 @@ if __name__ == '__main__':
         'label': 'report',
         'depends_on': [linux_buld_step['key'], windows_buld_step['key']],
         'commands': [
-            'echo report',
+            'export SRC=${BUILDKITE_BUILD_PATH}/llvm-premerge-checks',
+            'rm -rf ${SRC}',
+            'git clone --depth 1 --branch ${scripts_branch} https://github.com/google/llvm-premerge-checks.git ${SRC}',
+            '${SRC}/scripts/buildkite/set_build_status.py',
         ],
         'allow_dependency_failure': True,
         'artifact_paths': ['artifacts/**/*'],

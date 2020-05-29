@@ -2,10 +2,7 @@ import logging
 import os
 import re
 import subprocess
-import uuid
-
-from phabtalk.phabtalk import PhabTalk
-
+from typing import Optional
 
 def upload_file(base_dir: str, file: str):
     """
@@ -22,3 +19,10 @@ def upload_file(base_dir: str, file: str):
     else:
         logging.warning(f'could not find artifact {base_dir}/{file}')
         return None
+
+
+def format_url(url: str, name: Optional[str] = None):
+    if name is None:
+        name = url
+    return f"\033]1339;url='{url}';content='{name}'\a\n"
+

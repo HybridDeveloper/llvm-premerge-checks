@@ -87,12 +87,6 @@ def cmake_report(report: Report) -> CheckResult:
     return add_shell_result(report, 'cmake', cmake_result)
 
 
-def furl(url: str, name: Optional[str] = None):
-    if name is None:
-        name = url
-    return f"\033]1339;url='{url}';content='{name}'\a\n"
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Runs premerge checks8')
     parser.add_argument('--log-level', type=str, default='WARNING')
@@ -125,12 +119,12 @@ if __name__ == '__main__':
     ph_buildable_diff = os.getenv('ph_buildable_diff')
     if ph_buildable_diff is not None:
         url = f'https://reviews.llvm.org/D{os.getenv("ph_buildable_revision")}?id={ph_buildable_diff}'
-        print(f'Review: {furl(url)}')
+        print(f'Review: {format_url(url)}')
     if os.getenv('BUILDKITE_TRIGGERED_FROM_BUILD_NUMBER') is not None:
         url = f'https://buildkite.com/llvm-project/' \
               f'{os.getenv("BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG")}/'\
               f'builds/{os.getenv("BUILDKITE_TRIGGERED_FROM_BUILD_NUMBER")}'
-        print(f'Triggered from build {furl(url)}')
+        print(f'Triggered from build {format_url(url)}')
     logging.debug(report)
     success = True
     for s in report.steps:
@@ -148,15 +142,17 @@ if __name__ == '__main__':
     # TODO: dump the report and deduplicate tests and other reports later (for multiple OS) in a separate step.
     ph_target_phid = os.getenv('ph_target_phid')
     if ph_target_phid is not None:
-        build_url = f'https://reviews.llvm.org/harbormaster/build/{os.getenv("ph_build_id")}'
-        print(f'Reporting results to Phabricator build {furl(build_url)}')
-        phabtalk.update_build_status(ph_buildable_diff, ph_target_phid, False, success, report.lint, report.unit)
+        phabtalk.update_build_status(ph_buildable_diff, ph_target_phid, True, success, report.lint, report.unit)
         for a in report.artifacts:
-            url = upload_file(a['dir'], a['file'])
-            if url is not None:
-                maybe_add_url_artifact(phabtalk, ph_target_phid, url, a['name'])
+                url = upload_file(a['dir'], a['file'])
+                if url is not None:
+                    maybe_add_url_artifact(phabtalk, ph_target_phid, url, a['name'])
     else:
         logging.warning('No phabricator phid is specified. Will not update the build status in Phabricator')
     # TODO: add link to report issue on github
     with open(os.path.join(artifacts_dir, 'step-timings.json'), 'w') as f:
         f.write(json.dumps(timings))
+    if not success:
+        print('Build completed with failures')
+        # TODO: test with python error in script
+        exit(1)
