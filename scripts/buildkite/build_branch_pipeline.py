@@ -49,7 +49,8 @@ if __name__ == '__main__':
             'echo %errorlevel%',  # TODO: how to properly ignore the error above?
         ],
         'artifact_paths': ['artifacts/**/*'],
-        'agents': {'queue': queue, 'os': 'windows'},
+        # 'agents': {'queue': queue, 'os': 'windows'},
+        'agents': {'queue': 'dev', 'os': 'windows'},
     }
     steps.append(linux_buld_step)
     steps.append(windows_buld_step)
