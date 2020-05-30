@@ -53,8 +53,8 @@ if __name__ == '__main__':
             'exit %return%',
         ],
         'artifact_paths': ['artifacts/**/*'],
-        # 'agents': {'queue': queue, 'os': 'windows'},
-        'agents': {'queue': 'dev', 'os': 'windows'},
+        'agents': {'queue': queue, 'os': 'windows'},
+        # 'agents': {'queue': 'dev', 'os': 'windows'},
     }
     steps.append(linux_buld_step)
     steps.append(windows_buld_step)
@@ -65,6 +65,7 @@ if __name__ == '__main__':
             'set -uo pipefail',
             'mkdir -p artifacts/linux',
             'mkdir -p artifacts/windows',
+            'touch artifacts/linux/me',
             'buildkite-agent artifact download clang-tidy.txt artifacts/linux --step build-linux',
             'buildkite-agent artifact download "artifacts/build_result.txt" artifacts/linux --step build-linux',
             'buildkite-agent artifact download "artifacts\\build_result.txt" artifacts/windows --step build-windows',
