@@ -59,7 +59,8 @@ if __name__ == '__main__':
         'depends_on': [linux_buld_step['key'], windows_buld_step['key']],
         'commands': [
             'set -uo pipefail',
-            'buildkite-agent artifact download "artifacts\\\\build_result.txt" artifacts/build_result_win1.txt --step build-windows',
+            'mkdir -p artifacts',
+            # 'buildkite-agent artifact download "artifacts\\\\build_result.txt" artifacts/build_result_win1.txt --step build-windows',
             'buildkite-agent artifact download "artifacts\\build_result.txt" artifacts/build_result_win2.txt --step build-windows',
             'buildkite-agent artifact download "artifacts/build_result.txt" artifacts/build_result_win3.txt --step build-windows',
             'buildkite-agent artifact download "artifacts/build_result.txt" artifacts/build_result_linux.txt --step build-linux',
