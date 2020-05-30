@@ -60,10 +60,11 @@ if __name__ == '__main__':
         'commands': [
             'set -uo pipefail',
             'mkdir -p artifacts',
+            'buildkite-agent artifact download clang-tidy.txt artifacts/clang-tidy.txt --step build-linux',
+            'buildkite-agent artifact download "artifacts/build_result.txt" artifacts/build_result_linux.txt --step build-linux',
             # 'buildkite-agent artifact download "artifacts\\\\build_result.txt" artifacts/build_result_win1.txt --step build-windows',
             'buildkite-agent artifact download "artifacts\\build_result.txt" artifacts/build_result_win2.txt --step build-windows',
             'buildkite-agent artifact download "artifacts/build_result.txt" artifacts/build_result_win3.txt --step build-windows',
-            'buildkite-agent artifact download "artifacts/build_result.txt" artifacts/build_result_linux.txt --step build-linux',
             'ls artifacts',
             'export SRC=${BUILDKITE_BUILD_PATH}/llvm-premerge-checks',
             'rm -rf ${SRC}',
