@@ -41,6 +41,7 @@ if __name__ == '__main__':
         'label': ':windows:build windows',
         'key': 'build-windows',
         'commands': [
+            'sccache --start-server',
             'sccache --show-stats',
             'set SRC=%BUILDKITE_BUILD_PATH%/llvm-premerge-checks',
             'rm -rf %SRC%',
