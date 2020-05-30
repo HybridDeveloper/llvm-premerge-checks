@@ -46,8 +46,11 @@ if __name__ == '__main__':
             'set SRC=%BUILDKITE_BUILD_PATH%/llvm-premerge-checks',
             'rm -rf %SRC%',
             'git clone --depth 1 --branch %scripts_branch% https://github.com/google/llvm-premerge-checks.git %SRC%',
-            '%SRC%/scripts/premerge_checks.py',
-            'echo %errorlevel%',  # TODO: how to properly ignore the error above?
+            'start /wait %SRC%/scripts/premerge_checks.py',
+            'SET return=%errorlevel%',
+            'echo %return%',
+            'sccache --show-stats',
+            'exit %return%',
         ],
         'artifact_paths': ['artifacts/**/*'],
         # 'agents': {'queue': queue, 'os': 'windows'},
